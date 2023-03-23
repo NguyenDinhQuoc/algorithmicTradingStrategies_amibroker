@@ -1,0 +1,43 @@
+// tong dat lenh
+_SECTION_BEGIN("TONG LENH DAT MUA/BAN");
+if (Nz(VarGet("runonce_SupplyDemand")) == 0) {
+	VarSet("runonce_SupplyDemand",1);
+	NN = Name() +  "_CC";
+
+	SellQuantity = Nz(Foreign(NN,"O",0),0);
+	BuyQuantity = Nz(Foreign(NN,"C",0),0);
+
+	NetQuantity = BuyQuantity  - SellQuantity;
+
+	sellText = "Demand Quantity:";
+	buyText = "Supply Quantity:";
+	netText = "Quantity: ";
+	netQuantity = BuyQuantity - SellQuantity;
+}
+Plot(netQuantity,"",IIf(netQuantity>Ref(netQuantity,-1),colorCustom9,colorRed),styleHistogram|styleThick);
+_SECTION_END();
+_SECTION_BEGIN("Title");
+messageboard = ParamToggle("Tat Title","Hien|An",1);
+function GetSecondNum()
+{
+Time = Now( 4 );
+Seconds = int( Time % 100 );
+Minutes = int( Time / 100 % 100 );
+Hours = int( Time / 10000 % 100 );
+SecondNum = int( Hours * 60 * 60 + Minutes * 60 + Seconds );
+return SecondNum;
+}
+RequestTimedRefresh( 1 );
+TimeFrame = Interval();
+SecNumber = GetSecondNum();
+SecsLeft	= SecNumber - int( SecNumber / TimeFrame ) * TimeFrame;
+SecsToGo	= TimeFrame - SecsLeft;
+YC=Ref(C,-1);
+DD=Prec(C-YC,2);
+xx=Prec((DD/YC)*100,2);
+if (messageboard == 1 )
+{
+Title =  EncodeColor(colorCustom12) + "TONG LENH DAT MUA/BAN" + " - " + EncodeColor(colorYellow)+ FullName()+"("+Name()+") - " + Date() +"\n" +EncodeColor(colorWhite) +"Mo cua-"+O+"  "+"Cao-"+H+"  "+"Thap-"+L+"  "+
+"Dong cua-"+C+"  "+ "Khoi Luong = "+ WriteVal(netQuantity) + " - " +  EncodeColor(colorYellow)+ "Dem Time: " + EncodeColor(colorCustom6)+ NumToStr( SecsToGo, 1.0, False ) + " / " + NumToStr( TimeFrame, 1.0 ) +" - "+ EncodeColor(colorYellow) + "Gia thay doi: " + EncodeColor(colorCustom6) + DD + " (" + NumToStr( xx, 1.2 )+ "%)";
+}
+_SECTION_END();

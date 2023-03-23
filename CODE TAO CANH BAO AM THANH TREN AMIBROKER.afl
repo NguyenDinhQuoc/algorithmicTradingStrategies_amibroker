@@ -1,0 +1,4 @@
+Buy = Cross(MA(C,20),MA(C,10));
+Sell = Cross(MA(C,4),MA(C,8));
+AlertIF(Buy, "SOUND C:\\Program Files\\AmiBroker\\music\\tin hieu mua phan ky adx.wav", "Audio alert",1 );
+AlertIF(Sell, "SOUND C:\\Program Files\\AmiBroker\\music\\tin hieu ban phan ky adx.wav", "Audio alert",2);

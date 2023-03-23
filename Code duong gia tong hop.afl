@@ -1,0 +1,37 @@
+messageboard = ParamToggle("Tat/mo duong Gia","Hien|An",1);
+if (messageboard == 1 )
+{
+_SECTION_BEGIN("Loai Duong Gia");
+GPX = Param("TO/NHO DO THI", 25, 0, 100, 1);
+GraphXSpace =GPX;
+TypeofPrice  = ParamList("Loai duong gia","Candle Stick,Bar Chart,Heiken Ashi,Trend Line,Trend Line Dot",0);
+switch(TypeofPrice)
+{
+   case "Candle Stick":
+		Plot(C,"",IIf(C>Ref(C,-1),colorCustom9,colorRed),styleCandle);
+      break; 
+   case "Bar Chart":
+		BarColor=IIf(C>Ref(C,-1),colorCustom9,colorRed);
+		PlotOHLC( Open,  High,  Low,  Close, "", BarColor, styleBar);
+      break;
+   case "Heiken Ashi":
+		SetChartOptions(0,chartShowArrows | chartShowDates);
+        HaClose = (O + H + L + C)/4; 
+		HaOpen = AMA( Ref( HaClose, -1 ), 0.5 ); 
+		HaHigh = Max( H, Max( HaClose, HaOpen ) ); 
+		HaLow = Min( L, Min( HaClose, HaOpen ) ); 
+		xDiff = (HaHigh - Halow) * 10000;
+		barcolor = IIf(HaClose >= HaOpen,colorCustom9,colorRed);
+		PlotOHLC( HaOpen, HaHigh, HaLow, HaClose, "", barcolor, styleCandle );
+		break;
+		  case "Trend Line":
+		Plot(C,"",IIf(C>Ref(C,-1),colorCustom6,colorRed),styleDots|styleThick);
+		break;
+		case "Trend Line Dot":
+		Plot(C,"",IIf(C>Ref(C,-1),colorCustom6,colorRed),styleDots);
+		Plot(MA( C, 20 ),"MA20",colorCustom8,styleThick);
+		Plot(EMA( C, 6 ),"EMA6",colorCustom15,styleThick);
+		break;
+}
+_SECTION_END();
+}

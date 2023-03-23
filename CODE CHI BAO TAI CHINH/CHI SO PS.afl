@@ -1,0 +1,68 @@
+_SECTION_BEGIN("CHI SO P/S");
+Plot(Close / GetFnData( "SalesPerShare" ),"",IIf(Close / GetFnData( "SalesPerShare" )>Ref(Close / GetFnData( "SalesPerShare" ),-1),colorCustom9,colorRed),styleThick);
+_SECTION_END();
+_SECTION_BEGIN("Title");
+messageboard = ParamToggle("Tat Title","Hien|An",1);
+function GetSecondNum()
+{
+Time = Now( 4 );
+Seconds = int( Time % 100 );
+Minutes = int( Time / 100 % 100 );
+Hours = int( Time / 10000 % 100 );
+SecondNum = int( Hours * 60 * 60 + Minutes * 60 + Seconds );
+return SecondNum;
+}
+RequestTimedRefresh( 1 );
+TimeFrame = Interval();
+SecNumber = GetSecondNum();
+SecsLeft	= SecNumber - int( SecNumber / TimeFrame ) * TimeFrame;
+SecsToGo	= TimeFrame - SecsLeft;
+YC=Ref(C,-1);
+DD=Prec(C-YC,2);
+xx=Prec((DD/YC)*100,2);
+if (messageboard == 1 )
+{
+Title =  EncodeColor(colorCustom12) + "CHI SO P/S" + " - " + EncodeColor(colorYellow)+ FullName()+"("+Name()+") - " + Date() +"\n" +EncodeColor(colorWhite) +"Mo cua-"+O+"  "+"Cao-"+H+"  "+"Thap-"+L+"  "+
+"Dong cua-"+C+"  "+ "Khoi Luong = "+ WriteVal(V) + " - " +  EncodeColor(colorYellow)+ "Dem Time: " + EncodeColor(colorCustom6)+ NumToStr( SecsToGo, 1.0, False ) + " / " + NumToStr( TimeFrame, 1.0 ) +" - "+ EncodeColor(colorYellow) + "Gia thay doi: " + EncodeColor(colorCustom6) + DD + " (" + NumToStr( xx, 1.2 )+ "%)";
+}
+_SECTION_END();
+/*
+"EPS"
+"EPSEstCurrentYear"
+"EPSEstNextYear"
+"EPSEstNextQuarter"
+"PEGRatio"
+"SharesFloat"
+"SharesOut"
+"DividendPayDate"
+"ExDividendDate"
+"BookValuePerShare"
+"DividendPerShare"
+"ProfitMargin"
+"OperatingMargin"
+"OneYearTargetPrice"
+"ReturnOnAssets"
+"ReturnOnEquity"
+"QtrlyRevenueGrowth"
+"GrossProfitPerShare"
+"SalesPerShare"
+"EBITDAPerShare"
+"QtrlyEarningsGrowth"
+"InsiderHoldPercent"
+"InstitutionHoldPercent"
+"SharesShort"
+"SharesShortPrevMonth"
+"ForwardDividendPerShare"
+"ForwardEPS"
+"OperatingCashFlow"
+"LeveredFreeCashFlow"
+"Beta"
+"LastSplitRatio"
+"LastSplitDate"
+"Alias" (returns symbol alias - string) - 5.50 and above
+"Address" (returns symbol address - string) - 5.50 and above
+"Country" (returns symbol country - string) - 5.60 and above
+"DelistingDate" returns symbol delisting date (as datetime) - 5.70 and above
+"PointValue" - returns symbols point value
+"FullName" - returns full name of the symbol
+*/
