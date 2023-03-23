@@ -1,0 +1,2 @@
+# algorithmicTradingStrategies_amibroker
+algorithmic trading strategies code for Amibroker
